@@ -9,16 +9,16 @@ import (
 	"strconv"
 	"strings"
 
+	ibclient "github.com/infobloxopen/infoblox-go-client/v2"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	"github.com/jetstack/cert-manager/pkg/acme/webhook/apis/acme/v1alpha1"
 	"github.com/jetstack/cert-manager/pkg/acme/webhook/cmd"
 	cmmeta "github.com/jetstack/cert-manager/pkg/apis/meta/v1"
-
-	ibclient "github.com/infobloxopen/infoblox-go-client/v2"
+	logf "github.com/jetstack/cert-manager/pkg/logs"
 )
 
 var GroupName = os.Getenv("GROUP_NAME")
@@ -114,19 +114,19 @@ func (c *customDNSProviderSolver) Present(ch *v1alpha1.ChallengeRequest) error {
 	// Find or create TXT record
 	recordName := c.DeDot(ch.ResolvedFQDN)
 
-	ref, err := c.GetTXTRecord(ib, recordName, ch.Key, cfg.View)
+	recordRef, err := c.GetTXTRecord(ib, recordName, ch.Key, cfg.View)
 	if err != nil {
 		return nil
 	}
 
-	if ref != "" {
-		fmt.Printf("Warning: TXT record already present (%s)!\n", ref)
+	if recordRef != "" {
+		logf.V(logf.InfoLevel).InfoS("TXT record already present", "name", recordName, "ref", recordRef)
 	} else {
-		recordTXT, err := c.CreateTXTRecord(ib, recordName, ch.Key, cfg.View)
+		recordRef, err := c.CreateTXTRecord(ib, recordName, ch.Key, cfg.View)
 		if err != nil {
 			return err
 		}
-		fmt.Printf("Created new TXT record: %+v\n", recordTXT)
+		logf.V(logf.InfoLevel).InfoS("Created new TXT record", "name", recordName, "ref", recordRef)
 	}
 
 	return nil
@@ -153,20 +153,21 @@ func (c *customDNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
 	// Find and delete TXT record
 	recordName := c.DeDot(ch.ResolvedFQDN)
 
-	ref, err := c.GetTXTRecord(ib, recordName, ch.Key, cfg.View)
+	recordRef, err := c.GetTXTRecord(ib, recordName, ch.Key, cfg.View)
 	if err != nil {
 		return err
 	}
 
-	if ref == "" {
-		return fmt.Errorf("Warning: TXT record '%s' with text '%s' not found!\n", recordName, ch.Key)
+	if recordRef == "" {
+		logf.V(logf.InfoLevel).InfoS("TXT record not found, skipping deletion", "name", recordName, "text", ch.Key)
+		return nil
 	}
 
-	_, err = ib.DeleteObject(ref)
+	_, err = ib.DeleteObject(recordRef)
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Deleted TXT record with ref: %s)!\n", ref)
+	logf.V(logf.InfoLevel).InfoS("Deleted TXT record", "name", recordName, "ref", recordRef)
 
 	return nil
 }
@@ -270,7 +271,6 @@ func (c *customDNSProviderSolver) getIbClient(cfg *customDNSProviderConfig, name
 func (c *customDNSProviderSolver) getSecret(sel cmmeta.SecretKeySelector, namespace string) (string, error) {
 	secret, err := c.client.CoreV1().Secrets(namespace).Get(context.Background(), sel.Name, metav1.GetOptions{})
 	if err != nil {
-		fmt.Printf("Secret '%s' not found\n", sel.Name)
 		return "", err
 	}
 
