@@ -1,4 +1,4 @@
-module github.com/cert-manager/webhook-infoblox-wapi
+module github.com/luisico/cert-manager-webhook-infoblox-wapi
 
 go 1.16
 

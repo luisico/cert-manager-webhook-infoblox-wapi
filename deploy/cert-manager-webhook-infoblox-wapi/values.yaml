@@ -6,15 +6,15 @@
 # solve the DNS01 challenge.
 # This group name should be **unique**, hence using your own company's domain
 # here is recommended.
-groupName: acme.kea.rockefeller.edu
+groupName: acme.mycompany.com
 
 certManager:
   namespace: cert-manager
   serviceAccountName: cert-manager
 
 image:
-  repository: rcode.rockefeller.edu:5005/cce/cm-webhook-infoblox-wapi
-  tag: latest
+  repository: ghcr.io/luisico/cert-manager-webhook-infoblox-wapi
+  tag: 1.5.4
   pullPolicy: IfNotPresent
 
 nameOverride: ""

@@ -1,7 +1,7 @@
 OS ?= $(shell go env GOOS)
 ARCH ?= $(shell go env GOARCH)
 
-IMAGE_NAME := "rcode.rockefeller.edu:5005/cce/cm-webhook-infoblox-wapi"
+IMAGE_NAME := "luisico/cert-manager-webhook-infoblox-wapi"
 IMAGE_TAG := "latest"
 
 OUT := $(shell pwd)/_out
@@ -35,7 +35,7 @@ build:
 .PHONY: rendered-manifest.yaml
 rendered-manifest.yaml:
 	helm template \
-		webhook-infoblox-wapi \
+		cert-manager-webhook-infoblox-wapi \
 		--set image.repository=$(IMAGE_NAME) \
 		--set image.tag=$(IMAGE_TAG) \
-		deploy/example-webhook > "$(OUT)/rendered-manifest.yaml"
+		deploy/cert-manager-webhook-infoblox-wapi > "$(OUT)/rendered-manifest.yaml"
