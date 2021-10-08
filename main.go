@@ -163,7 +163,7 @@ func (c *customDNSProviderSolver) CleanUp(ch *v1alpha1.ChallengeRequest) error {
 		return nil
 	}
 
-	_, err = ib.DeleteObject(recordRef)
+	err = c.DeleteTXTRecord(ib, recordRef)
 	if err != nil {
 		return err
 	}
@@ -311,6 +311,14 @@ func (c *customDNSProviderSolver) CreateTXTRecord(ib ibclient.IBConnector, name 
 	return ib.CreateObject(recordTXT)
 }
 
+// Delete a TXT record in Infoblox by ref
+func (c *customDNSProviderSolver) DeleteTXTRecord(ib ibclient.IBConnector, ref string) error {
+	_, err := ib.DeleteObject(ref)
+
+	return err
+}
+
+// Remove trailing dot
 func (c *customDNSProviderSolver) DeDot(string string) string {
 	result := strings.TrimSuffix(string, ".")
 
