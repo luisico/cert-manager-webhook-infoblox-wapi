@@ -1,5 +1,7 @@
 # Helm repository for cert-manager-webhook-infoblox-wapi
 
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/cert-manager-webhook-infoblox-wapi)](https://artifacthub.io/packages/search?repo=cert-manager-webhook-infoblox-wapi)
+
 Sources and further documentation can be found at [https://github.com/luisico/cert-manager-webhook-infoblox-wapi](https://github.com/luisico/cert-manager-webhook-infoblox-wapi).
 
 ## Usage
