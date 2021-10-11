@@ -189,6 +189,8 @@ I you would like to contribute to this projects, please, open a PR via GitHub. T
 
 This project inherits the Apache 2.0 license from https://github.com/cert-manager/webhook-example.
 
+Modifications to files are listed in [NOTICE](./NOTICE).
+
 ## Author
 
 Luis Gracia while at [The Rockefeller University](http://www.rockefeller.edu):
