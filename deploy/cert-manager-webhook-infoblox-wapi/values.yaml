@@ -13,8 +13,8 @@ certManager:
   serviceAccountName: cert-manager
 
 image:
-  repository: mycompany/webhook-image
-  tag: latest
+  repository: ghcr.io/luisico/cert-manager-webhook-infoblox-wapi
+  tag: 1.5.4
   pullPolicy: IfNotPresent
 
 nameOverride: ""
