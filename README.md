@@ -13,7 +13,7 @@ This project is a fork of https://github.com/cert-manager/webhook-example.
 - InfoBlox GRID installation with WAPI 2.5 or above
 - helm v3
 - kubernetes 1.21+
-- cert-manager 1.5.4+
+- cert-manager 1.5+
 
 Note that other versions might work, but have not been tested.
 
