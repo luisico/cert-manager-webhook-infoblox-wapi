@@ -29,7 +29,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   secretName: {{ include "webhook.rootCACertificate" . }}
-  duration: {{ .Values.webhook.rootCACertificate.duration }}
+  duration: {{ .Values.rootCACertificate.duration }}
   issuerRef:
     name: {{ include "webhook.selfSignedIssuer" . }}
   commonName: "ca.webhook.cert-manager"
@@ -67,7 +67,7 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   secretName: {{ include "webhook.servingCertificate" . }}
-  duration: {{ .Values.webhook.servingCertificate.duration }}
+  duration: {{ .Values.servingCertificate.duration }}
   issuerRef:
     name: {{ include "webhook.rootCAIssuer" . }}
   dnsNames:
