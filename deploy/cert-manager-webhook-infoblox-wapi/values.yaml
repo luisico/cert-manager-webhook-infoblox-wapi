@@ -12,6 +12,11 @@ certManager:
   namespace: cert-manager
   serviceAccountName: cert-manager
 
+rootCACertificate:
+  duration: "43800h"
+servingCertificate:
+  duration: "8760h"
+
 image:
   repository: ghcr.io/luisico/cert-manager-webhook-infoblox-wapi
   tag: 1.5
