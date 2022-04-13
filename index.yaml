@@ -3,6 +3,28 @@ entries:
   cert-manager-webhook-infoblox-wapi:
   - apiVersion: v1
     appVersion: 1.5.0
+    created: "2022-04-13T18:09:06.752675947Z"
+    description: Cert-manager webhook for interacting with InfoBlox WAPI servers
+    digest: bb4f0835481b6242a1129fd9b7157809247825f18afd9e770f7743815bd41d4b
+    home: https://github.com/luisico/cert-manager-webhook-infoblox-wapi
+    keywords:
+    - cert-manager
+    - webhook
+    - letsencrypt
+    - acme
+    - dns01
+    - infoblox
+    maintainers:
+    - email: lgracia@rockefeller.edu
+      name: Luis Gracia
+    name: cert-manager-webhook-infoblox-wapi
+    sources:
+    - https://github.com/luisico/cert-manager-webhook-infoblox-wapi
+    urls:
+    - https://github.com/luisico/cert-manager-webhook-infoblox-wapi/releases/download/helm-chart-1.5.2/cert-manager-webhook-infoblox-wapi-1.5.2.tgz
+    version: 1.5.2
+  - apiVersion: v1
+    appVersion: 1.5.0
     created: "2021-10-12T17:12:17.053142749Z"
     description: Cert-manager webhook for interacting with InfoBlox WAPI servers
     digest: 6e0a9ecd05a8a455fb811b79f835b238cc2af1bffbb53f9b261828b0ca56a9cb
@@ -23,4 +45,4 @@ entries:
     urls:
     - https://github.com/luisico/cert-manager-webhook-infoblox-wapi/releases/download/helm-chart-1.5.0/cert-manager-webhook-infoblox-wapi-1.5.0.tgz
     version: 1.5.0
-generated: "2021-10-12T17:12:17.053148149Z"
+generated: "2022-04-13T18:09:06.752683247Z"
