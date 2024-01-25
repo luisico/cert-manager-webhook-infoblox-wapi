@@ -35,6 +35,8 @@ clean-kubebuilder:
 
 build:
 	docker build -t "$(IMAGE_NAME):$(IMAGE_TAG)" .
+
+push: 
 	docker tag "$(IMAGE_NAME):$(IMAGE_TAG)" "$(IMAGE_NAME):latest"
 	docker push "$(IMAGE_NAME):$(IMAGE_TAG)"
 	docker push "$(IMAGE_NAME):latest"
