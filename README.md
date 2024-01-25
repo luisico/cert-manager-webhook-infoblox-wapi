@@ -36,16 +36,21 @@ Docker images are stored in GitHub's [ghcr.io](ghcr.io) registry, specifically a
 
 #### Using the public helm chart
 
-```
+```sh
 helm repo add cert-manager-webhook-infoblox-wapi https://luisico.github.io/cert-manager-webhook-infoblox-wapi
-helm -n cert-manager install cert-manager-webhook-infoblox-wapi
+
+# The values file below is optional, if you don't need it you can remove that line.
+helm -n cert-manager install \
+  cert-manager-webhook \
+  cert-manager-webhook-infoblox-wapi/cert-manager-webhook-infoblox-wapi \
+  -f cert-manager-infoblox-values.yaml
 ```
 
 #### From source
 
 Check out this repository and run the following command:
 
-```
+```sh
 helm -n cert-manager install webhook-infoblox-wapi deploy/cert-manager-webhook-infoblox-wapi
 ```
 
@@ -69,7 +74,7 @@ helm -n cert-manager install webhook-infoblox-wapi deploy/cert-manager-webhook-i
 | tolerations                    | Deployment tolerations | []
 | affinity                       | Deployment affinity | {}
 
-### Install a Issuer
+### Install an Issuer
 
 To install your issuer you will need the following resources:
 - `Issuer` or `ClusterIssuer`
@@ -78,7 +83,7 @@ To install your issuer you will need the following resources:
 
 An example follows:
 
-```
+```yaml
 ---
 apiVersion: v1
 kind: Secret
@@ -145,7 +150,7 @@ roleRef:
 subjects:
   - apiGroup: ""
     kind: ServiceAccount
-    name: webhook-infoblox-wapi
+    name: cert-manager-webhook-cert-manager-webhook-infoblox-wapi
     namespace: cert-manager
 ```
 
@@ -171,7 +176,7 @@ This is the full list of webhook configuration options:
 
 Now you can create a certificate, for example:
 
-```
+```yaml
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -191,7 +196,7 @@ spec:
 
 Requirements:
 
-- go >= 1.16
+- go >= 1.21
 
 First create you own `config.json` and `credentials.yaml` inside `testdata/infoblox-wapi/` based on the corresponding `.sample` files. The values in `config.json` correspond to the webhook `config` section in the example `ClusterIssuer` above, while `credentials.yaml` will create a secret. Ensure that you fill in the values for the test to connect to an InfoBlox instance.
 
@@ -201,9 +206,16 @@ You can then run the test suite with:
 TEST_ZONE_NAME=example.com. make test
 ```
 
+## Building
+
+1. If you've made any changes to `go.mod`, run `go mod tindy`
+1. Update the `Makefile` with a new `IMAGE_TAG` if necessary.
+1. Run `make build`.  A new Docker container will be generated with the `IMAGE_NAME` and `IMAGE_TAG` given in the `Makefile`
+1. Run `make push`. This will tag the version given to latest and push both images to the repo in the `IMAGE_NAME`
+
 ## Contributions
 
-I you would like to contribute to this projects, please, open a PR via GitHub. Thanks.
+If you would like to contribute to this projects, please, open a PR via GitHub. Thanks.
 
 ## License
 
