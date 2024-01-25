@@ -1,12 +1,16 @@
 OS ?= $(shell go env GOOS)
 ARCH ?= $(shell go env GOARCH)
 
-IMAGE_NAME := "luisico/cert-manager-webhook-infoblox-wapi"
-IMAGE_TAG := "latest"
+IMAGE_NAME := luisico/cert-manager-webhook-infoblox-wapi
+# tag is goVersion-certMangerVersion-infobloxVersion-build_number
+# Example: go=1.21  cert-manager=1.13  infoblox-go-client=2.0
+# These values are updated in go.mod
+# Increment the buld number (last value) for each automated build for security and patch updates.
+IMAGE_TAG := 1.21-1.13-2.0-1
 
 OUT := $(shell pwd)/_out
 
-KUBEBUILDER_VERSION=2.3.2
+KUBEBUILDER_VERSION=3.13.0
 
 $(shell mkdir -p "$(OUT)")
 
@@ -31,6 +35,9 @@ clean-kubebuilder:
 
 build:
 	docker build -t "$(IMAGE_NAME):$(IMAGE_TAG)" .
+	docker tag "$(IMAGE_NAME):$(IMAGE_TAG)" "$(IMAGE_NAME):latest"
+	docker push "$(IMAGE_NAME):$(IMAGE_TAG)"
+	docker push "$(IMAGE_NAME):latest"
 
 .PHONY: rendered-manifest.yaml
 rendered-manifest.yaml:
