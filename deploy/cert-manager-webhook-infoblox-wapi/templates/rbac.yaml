@@ -1,13 +1,17 @@
+{{- if .Values.serviceAccount.create -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "webhook.fullname" . }}
+  name: {{ include "webhook.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ include "webhook.name" . }}
-    chart: {{ include "webhook.chart" . }}
-    release: {{ .Release.Name }}
-    heritage: {{ .Release.Service }}
+    {{- include "webhook.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+automountServiceAccountToken: {{ .Values.serviceAccount.automount }}
+{{- end }}
 ---
 # Grant the webhook permission to read the ConfigMap containing the Kubernetes
 # apiserver's requestheader-ca-certificate.
@@ -29,7 +33,7 @@ roleRef:
 subjects:
   - apiGroup: ""
     kind: ServiceAccount
-    name: {{ include "webhook.fullname" . }}
+    name: {{ include "webhook.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 ---
 # apiserver gets the auth-delegator role to delegate auth decisions to
@@ -50,7 +54,7 @@ roleRef:
 subjects:
   - apiGroup: ""
     kind: ServiceAccount
-    name: {{ include "webhook.fullname" . }}
+    name: {{ include "webhook.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 ---
 # Grant cert-manager permission to validate using our apiserver
@@ -67,7 +71,7 @@ rules:
   - apiGroups:
       - {{ .Values.groupName }}
     resources:
-      - '*'
+      - 'infoblox-wapi'
     verbs:
       - 'create'
 ---
@@ -125,5 +129,5 @@ roleRef:
 subjects:
   - apiGroup: ""
     kind: ServiceAccount
-    name: {{ include "webhook.fullname" . }}
+    name: {{ include "webhook.serviceAccountName" . }}
     namespace: {{ .Release.Namespace | quote }}

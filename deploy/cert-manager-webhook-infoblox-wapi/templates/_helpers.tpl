@@ -25,6 +25,36 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 
 {{/*
+Common labels
+*/}}
+{{- define "webhook.labels" -}}
+helm.sh/chart: {{ include "webhook.chart" . }}
+{{ include "webhook.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "webhook.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "webhook.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "webhook.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "webhook.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}
+{{/*
 Create chart name and version as used by the chart label.
 */}}
 {{- define "webhook.chart" -}}
