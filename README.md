@@ -1,3 +1,5 @@
+`DEPRECATED`: this repo is longer mantained by the author. Feel free to fork it and continue development. If a fork gets established, please, let me know and I'll point to it.
+
 # ACME webhook for InfoBlox WAPI
 
 An InfoBlox WAPI webhook for cert-manager.
