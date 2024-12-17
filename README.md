@@ -1,4 +1,5 @@
-`DEPRECATED`: this repo is longer mantained by the author. Feel free to fork it and continue development. If a fork gets established, please, let me know and I'll point to it.
+`DEPRECATED`: this repo is longer mantained by the author. Feel free to fork it and continue development, or switch to this other project: https://github.com/TazTheManiac/cert-manager-webhook-infoblox.
+
 
 # ACME webhook for InfoBlox WAPI
 
